@@ -1,92 +1,47 @@
 library('move')
-library('spacetime')
-library('plotKML')
+library('jsonlinte')
+library('httr')
 
-rFunction <- function(data)
-{
+rFunction = function(data, ...) {
   Sys.setenv(tz="UTC")
-  
-  ###  create space time object
-  sp_dat <- SpatialPoints(coordinates(data),proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0"))
-  sp_temp_all <- STIDF(sp_dat, timestamps(data), as.data.frame(data))
-  
-  # prepare html.table
-  sp_temp_all@data$date_time_attr <- paste("DateTime:", sp_temp_all@data$timestamp, sep = " ")
-  sp_temp_all@data$ID_attr <- paste("ID:", sp_temp_all@data$trackId, sep = " ")
-  
-  # kml
-  shape <- "http://maps.google.com/mapfiles/kml/paddle/stop-lv.png" #like this or with file in MOveApps?
-  
-  
-  ids <- as.character(unique(sp_temp_all@data$trackId))
 
-  for (i in seq(along=ids)) 
+  status_codes <- numeric() # for capturing API response status codes
+  for (i in 1:nrow(data))
   {
-    sp_temp_single_ID <- sp_temp_all[sp_temp_all@data$trackId == ids[i],]
+    if ("clusterID" %in% names(data)) # if the input movestack contains a cluster id field then output as a cluster event
+    {
+      output <- list("device_id"="1"
+                     ,"recorded_at"=format(data@data$timestamp[i],"%Y-%m-%d %X%z")
+                     ,"location"=list("x"=data@data$location.long[i],"y"=data@data$location.lat[i])
+                     ,"title"=data@study
+                     ,"event_type"="moveapps_cluster"
+                     ,"event_details"=list("cluster_id"=data@data$clusterID[i],"clustered_points"=data@data$n.locs[i],"clustered_ids"=data@data$n.ids[i])
+                     )
+    } else # else output a generic event
+    {
+      output <- list("device_id"="1"
+                     ,"recorded_at"=format(data@data$timestamp[i],"%Y-%m-%d %X%z")
+                     ,"location"=list("x"=data@data$location_long[i],"y"=data@data$location_lat[i])
+                     ,"title"=data@study
+                     ,"event_type"="moveapps_other"
+                     ,"event_details"=list("dummy_detail_1"=1,"dummy_detail_2"=2)
+      )
+    }
+    
+    er_json <- paste0("[",toJSON(output,pretty=TRUE,auto_unbox=TRUE),"]") # convert list to json and add square brackets to conform to ER API expected json format
 
-    attributes_sub <- paste(sp_temp_single_ID@data$ID_attr, sp_temp_single_ID@data$date_time_attr, sep = "; ")
-
-    # night roost points 
-    kml_open(paste0(Sys.getenv(x = "APP_ARTIFACTS_DIR", "/tmp/"),sprintf("pts%s.kml", ids[i])))
-    #kml_open(sprintf("pts%s.kml", ids[i]) )
-    
-    kml_layer(sp_temp_single_ID,
-              shape = shape, 
-              points_names = "",
-              size = 0.7,
-              match.ID = FALSE, 
-              html.table = attributes_sub)
-    
-    #kml_close(sprintf("pts%s.kml", ids[i]) )
-    kml_close(paste0(Sys.getenv(x = "APP_ARTIFACTS_DIR", "/tmp/"),sprintf("pts%s.kml", ids[i])))
-    
-    sp_temp_single_ID <- vector()
-    
+    # ER API call
+    er_post <- POST(
+      url = "https://cdip-api-prod01.pamdas.org/events/"
+      ,add_headers(.headers = c('apikey: 8PvB2C0Ujh9uCsr87UR6VFdF8NpAaTiC'
+                                , 'accept: application/json'
+                                , 'Content-Type: application/json'))
+      , body = er_json
+    )
+    status_codes[i] <- status_code(er_post)
   }
-  
-  
-  #################################################
-  #### create trajectories - add lines
-  
-  all_lines <- name_info <- list()
-  data.split <- move::split(data)
-  
-  for (j in seq(along=ids)) {
-    datai <- data.split[[j]]
-    line_class <- Line(coordinates(datai))
-    
-    all_lines[[j]] <- Lines(line_class, ID=ids[j])
-    name_info[[j]] <- ids[j]
-    
-    line_class <- vector()
-  }
-  
-  name_info_df <- as.data.frame(unlist(name_info))
-  names(name_info_df) <- "ID"           
-  
-  row.names(name_info_df) <- name_info_df$ID
-  
-  spLin_dat <- SpatialLines(all_lines)
-  spLindf_dat <- SpatialLinesDataFrame(spLin_dat, name_info_df)
-  proj4string(spLindf_dat) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +towgs84=0,0,0")
-  
-  #kml_open("trajectories.kml")
-  kml_open(paste0(Sys.getenv(x = "APP_ARTIFACTS_DIR", "/tmp/"),"trajectories.kml"))
-  kml_layer.SpatialLines(spLindf_dat, subfolder.name = paste(class(spLindf_dat)), colour=ID, width=3)
-  #kml_close("trajectories.kml")
-  kml_close(paste0(Sys.getenv(x = "APP_ARTIFACTS_DIR", "/tmp/"),"trajectories.kml"))
+  print(paste0(sum(status_codes==200)," of ",nrow(data@data)," events posted successfully to EarthRanger"))
   
   result <- data
   return(result)
 }
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
