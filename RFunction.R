@@ -2,7 +2,7 @@ library('move')
 library('jsonlinte')
 library('httr')
 
-rFunction = function(data, ...) {
+rFunction = function(data) {
   Sys.setenv(tz="UTC")
 
   status_codes <- numeric() # for capturing API response status codes
