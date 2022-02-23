@@ -7,23 +7,21 @@
         "name": "move"
       },
       {
-        "name": "spacetime"
+        "name": "jsonlite"
       },
       {
-        "name": "plotKML"
+        "name": "httr"
       }
     ]
   },
-  "createsArtifacts": true,
+  "createsArtifacts": false,
   "license": {
     "key": "MIT"
   },
   "language": "eng",
   "keywords": [
-	"map",
-    "interactive",
-	"kml",
-	"google earth"
+	"earthranger",
+        "cluster"
   ],
   "people": [
     {
