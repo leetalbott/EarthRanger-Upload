@@ -10,7 +10,7 @@ rFunction = function(data) {
   {
     if ("clusterID" %in% names(data)) # if the input movestack contains a cluster id field then output as a cluster event
     {
-      output <- list("device_id"="1"
+      output <- list("device_id"=data@data$tagID[i]
                      ,"recorded_at"=format(data@data$timestamp[i],"%Y-%m-%d %X%z")
                      ,"location"=list("x"=data@data$location.long[i],"y"=data@data$location.lat[i])
                      ,"title"=data@study
@@ -19,7 +19,7 @@ rFunction = function(data) {
                      )
     } else # else output a generic event
     {
-      output <- list("device_id"="1"
+      output <- list("device_id"=data@data$tagID[i]
                      ,"recorded_at"=format(data@data$timestamp[i],"%Y-%m-%d %X%z")
                      ,"location"=list("x"=data@data$location_long[i],"y"=data@data$location_lat[i])
                      ,"title"=data@study
