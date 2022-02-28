@@ -2,7 +2,7 @@ library('move')
 library('jsonlinte')
 library('httr')
 
-rFunction = function(data) {
+rFunction = function(server,api_key,data) {
   Sys.setenv(tz="UTC")
 
   status_codes <- numeric() # for capturing API response status codes
@@ -32,15 +32,15 @@ rFunction = function(data) {
 
     # ER API call
     er_post <- POST(
-      url = "https://cdip-api-prod01.pamdas.org/events/"
-      ,add_headers(.headers = c('apikey: 8PvB2C0Ujh9uCsr87UR6VFdF8NpAaTiC'
+      url = server
+      ,add_headers(.headers = c(paste0('apikey: ',api_key)
                                 , 'accept: application/json'
                                 , 'Content-Type: application/json'))
       , body = er_json
     )
     status_codes[i] <- status_code(er_post)
   }
-  print(paste0(sum(status_codes==200)," of ",nrow(data@data)," events posted successfully to EarthRanger"))
+  #print(paste0(sum(status_codes==200)," of ",nrow(data@data)," events posted successfully to EarthRanger"))
   
   result <- data
   return(result)
