@@ -5,14 +5,14 @@
       "name": "target server for upload",
       "description": "Choose the server for uploading",
       "defaultValue": "",
-      "type": "TEXT"
+      "type": "STRING"
     },
 	{
       "id": "api_key",
       "name": "EarthRanger API key",
       "description": "Provide your EarthRanger API key",
       "defaultValue": "",
-      "type": "TEXT"
+      "type": "STRING"
     }
   ],
   "dependencies": {
