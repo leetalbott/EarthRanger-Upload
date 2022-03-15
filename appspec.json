@@ -30,7 +30,7 @@
   },
   "createsArtifacts": false,
   "license": {
-    "key": "MIT"
+    "key": ""
   },
   "language": "eng",
   "keywords": [
@@ -39,33 +39,23 @@
   ],
   "people": [
     {
-      "firstName": "Andrea",
+      "firstName": "Lee",
       "middleInitials": null,
-      "lastName": "Kölzsch",
-      "email": "akoelzsch@ab.mpg.de",
-      "roles": ["compiler","author","creator"],
-      "orcid": "0000-0003-0193-1563",
-      "affiliation": "Max-Planck-Institute of Animal Behavior",
-      "affiliationRor": "https://ror.org/026stee22"
-    },
-	{
-      "firstName": "Matthias",
-      "middleInitials": null,
-      "lastName": "Loretto",
-      "email": ,
+      "lastName": "Talbott",
+      "email": "lee@nimblegravity.com",
       "roles": ["author"],
       "orcid": "",
-      "affiliation": "Max-Planck-Institute of Animal Behavior",
-      "affiliationRor": "https://ror.org/026stee22"
+      "affiliation": "Nimble Gravity",
+      "affiliationRor": ""
     }
   ],
   "funding": [
     {
-	"name": "Knobloch Family Foundation",
-	"comment": "grant for Migration Mapper (MPIAB)"
+	"name": "",
+	"comment": ""
 	}
   ],
   "documentation" : {
-    "url": "https://github.com/movestore/KML-output/blob/main/README.md"
+    "url": "https://github.com/leetalbott/EarthRanger-Upload/blob/main/README.md"
   }
 }
