@@ -1,5 +1,5 @@
 library('move')
-library('jsonlinte')
+library('jsonlite')
 library('httr')
 
 rFunction = function(server,api_key,data) {
