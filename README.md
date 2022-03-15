@@ -2,7 +2,7 @@
 
 MoveApps
 
-Github repository: xxx
+Github repository: https://github.com/leetalbott/EarthRanger-Upload
 
 ## Description
 Simple app to upload data from a movestack to EarthRanger via API.
@@ -20,7 +20,5 @@ moveStack in Movebank format
 none.
 
 ### Parameters 
-none.
-
-### Null or error handling:
-**Data:** The data are not manipulated, but empty input with no locations (NULL) leads to an error. For calculations in further Apps the input data set is returned.
+server:  EarthRanger target server
+api_key:  EarthRanger api key
