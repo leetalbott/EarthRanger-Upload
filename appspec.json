@@ -43,7 +43,7 @@
       "middleInitials": null,
       "lastName": "Talbott",
       "email": "lee@nimblegravity.com",
-      "roles": ["author"],
+      "roles": ["compiler","author","creator"],
       "orcid": "",
       "affiliation": "Nimble Gravity",
       "affiliationRor": ""
