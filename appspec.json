@@ -28,7 +28,6 @@
       }
     ]
   },
-  "createsArtifacts": false,
   "license": {
     "key": "MIT"
   },
@@ -48,12 +47,6 @@
       "affiliation": "Nimble Gravity",
       "affiliationRor": ""
     }
-  ],
-  "funding": [
-    {
-	"name": "",
-	"comment": ""
-	}
   ],
   "documentation" : {
     "url": "https://github.com/leetalbott/EarthRanger-Upload/blob/main/README.md"
